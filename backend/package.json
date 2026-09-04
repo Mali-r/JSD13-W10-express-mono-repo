@@ -1,0 +1,16 @@
+{
+  "name": "express-mono-repo",
+  "version": "0.0.1",
+  "description": "MERN Stack web app",
+  "license": "ISC",
+  "author": "Maliwan Rodsumrit",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node --env-file=.env --watch src/server.js",
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
