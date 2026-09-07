@@ -37,7 +37,7 @@ router.post("/", async (req, res, next) => {
 });
 
 // Update user
-router.put("/users/:id", async (req, res) => {
+router.put("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
     const { username, email, password } = req.body;
@@ -61,7 +61,7 @@ router.put("/users/:id", async (req, res) => {
 });
 
 // Delete user
-router.delete("/users/:id", async (req, res) => {
+router.delete("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
 
@@ -74,5 +74,5 @@ router.delete("/users/:id", async (req, res) => {
     return res.status(200).json({ message: "User deleted successfully" });
   } catch (err) {
     next(err);
-  }
+  } 
 });
