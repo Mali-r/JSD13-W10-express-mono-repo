@@ -1,6 +1,8 @@
 import express from "express";
 import { users } from "./fakeDB/fakeUser.js";
-import { router as apiRoutes } from "./routes/index.js"
+import { router as apiRoutes } from "./routes/index.js";
+import { connect } from "mongoose";
+import { connectDB } from "./config/db.js";
 
 const app = express();
 
@@ -8,7 +10,7 @@ app.use(express.json()); // ติดตั้ง Middleware สามารถ�
 
 // CRUD routes and endpoint
 
-app.get("/", (req,res) => {
+app.get("/", (req, res) => {
   return res.send(`<!doctype html>
 <html lang="en">
   <head>
@@ -166,22 +168,32 @@ app.get("/", (req,res) => {
       window.addEventListener("resize", resizeCanvas);
     </script>
   </body>
-</html>`)
+</html>`);
 });
 
 app.use("/api", apiRoutes);
-
 
 // Centralized Error Handling middleware
 app.use((err, req, res, next) => {
   return res.status(500).json({
     error: "Something went wrong on the server...",
-    message: err.message, 
-  })
+    message: err.message,
+  });
 });
 
 const PORT = 3001;
 
-app.listen(PORT, () => {
-  console.log(`Server running on PORT: ${PORT} ✈`);
-});
+async function start() {
+  try {
+    await connectDB();
+
+    app.listen(PORT, () => {
+      console.log(`Server running on PORT: ${PORT} 👽`);
+    });
+  } catch (err) {
+    console.error("Failed to connect to MongoDB", err.message);
+    process.exit(1);
+  }
+}
+
+start();
