@@ -1,7 +1,6 @@
 @baseURL = http://localhost:3001/api/v2
 
 ### Read all users
-
 GET {{baseURL}}/users
 
 ### Create a new user
@@ -24,3 +23,30 @@ Content-Type: application/json
 
 ### Delete a user
 DELETE {{baseURL}}/users/6a9e64b35fc0bc6327043f8f
+
+
+### SUPABASE 
+### Read all users
+GET {{baseURL}}/users/pg
+
+### Create a new user
+POST {{baseURL}}/users/pg
+Content-Type: application/json
+
+{
+  "username": "Mali3",
+  "email": "mali3@example.com",
+  "password": "pass1234",
+  "role": "user"
+}
+
+### Update a user
+PUT {{baseURL}}/users/pg/dcf21f1e-8c3a-46f6-8cd2-3aa13693a7af
+Content-Type: application/json
+
+{
+  "username": "MaliUpdatedPG"
+}
+
+### Delete a user
+DELETE {{baseURL}}/users/pg/dcf21f1e-8c3a-46f6-8cd2-3aa13693a7af
