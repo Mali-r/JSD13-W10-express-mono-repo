@@ -3,6 +3,7 @@ import { users } from "./fakeDB/fakeUser.js";
 import { router as apiRoutes } from "./routes/index.js";
 import { connect } from "mongoose";
 import { connectDB } from "./config/db.js";
+import { connectSupabase } from "./config/supabase.js";
 
 const app = express();
 
@@ -186,6 +187,8 @@ const PORT = 3001;
 async function start() {
   try {
     await connectDB();
+
+    await connectSupabase();
 
     app.listen(PORT, () => {
       console.log(`Server running on PORT: ${PORT} 👽`);
