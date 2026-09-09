@@ -1,11 +1,26 @@
 import express from "express";
+import cors from "cors";
+
 import { users } from "./fakeDB/fakeUser.js";
 import { router as apiRoutes } from "./routes/index.js";
 import { connect } from "mongoose";
 import { connectDB } from "./config/db.js";
 import { connectSupabase } from "./config/supabase.js";
 
+
 const app = express();
+
+const corsOptions = {
+  origin: [
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "http://localhost:5175",
+    "https://jsd-app.vercel.app",
+  ], // frontend domain
+  credentials: true, // ✅ allow cookies to be sent
+};
+
+app.use(cors(corsOptions)); // <-- ต้องอยู่ก่อน app.use(express.json()) และก่อน routes
 
 app.use(express.json()); // ติดตั้ง Middleware สามารถเข้าใจ json ได้ ส่งข้อมูลเปน json ได้
 
@@ -200,3 +215,5 @@ async function start() {
 }
 
 start();
+
+

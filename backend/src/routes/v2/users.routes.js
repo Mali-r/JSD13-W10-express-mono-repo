@@ -2,6 +2,14 @@ import { Router } from "express";
 import { User } from "../../models/user.model.js";
 
 export const router = Router();
+import bcrypt from "bcrypt";
+
+async function hashPassword(rawpass) {
+    const hash = await bcrypt.hash(rawpass, 12)
+    console.log(`Hash : ${hash}`);
+    return hash;
+}
+
 
 // Read user
 router.get("/", async (req, res) => {
@@ -26,11 +34,12 @@ router.post("/", async (req, res, next) => {
         .json({ error: "username, email and password are required!" });
     }
 
-    const newUser = await User.create({ username, email, password });
+    const hpass = await hashPassword(password);
+    const newUser = await User.create({ username, email, password:hpass});
 
-    const { password: _password, ...userWithoutPassword } = newUser.toObject(); // MongoDB Doc to JS, _password <- เป้น syntax ของ mongoDB
+    // const { password: _password, ...userWithoutPassword } = newUser.toObject(); // MongoDB Doc to JS, _password <- เป้น syntax ของ mongoDB
 
-    return res.status(201).json(userWithoutPassword);
+    return res.status(201).json(newUser);
   } catch (err) {
     next(err);
   }
