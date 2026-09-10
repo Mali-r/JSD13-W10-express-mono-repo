@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 import { users } from "./fakeDB/fakeUser.js";
 import { router as apiRoutes } from "./routes/index.js";
@@ -23,6 +24,8 @@ const corsOptions = {
 app.use(cors(corsOptions)); // <-- ต้องอยู่ก่อน app.use(express.json()) และก่อน routes
 
 app.use(express.json()); // ติดตั้ง Middleware สามารถเข้าใจ json ได้ ส่งข้อมูลเปน json ได้
+
+app.use(cookieParser()); // ติดตั้ง Middleware อ่าน cookie
 
 // CRUD routes and endpoint
 

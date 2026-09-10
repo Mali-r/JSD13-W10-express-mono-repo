@@ -2,6 +2,7 @@ import { Router } from "express";
 import { User } from "../../models/user.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { authUser } from "../../middleware/authUser.js"
 
 export const router = Router();
 
@@ -112,7 +113,9 @@ router.post("/login", async (req, res, next) => {
       res.status(400).json({ sucess: false, message: "Incorrect password" });
     }
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
 
     const isProd = process.env.NODE_ENV === "production";
 
@@ -124,19 +127,53 @@ router.post("/login", async (req, res, next) => {
       maxAge: 60 * 60 * 1000,
     });
 
-    return res
-      .status(200)
-      .json({ 
-        sucess: true, 
-        essage: "Login successful!", 
-        user: {
+    return res.status(200).json({
+      sucess: true,
+      essage: "Login successful!",
+      user: {
         _id: user._id,
         username: user.username,
         role: user.role,
         email: user.email,
-        }, 
+      },
     });
   } catch (err) {
     next(err);
   }
+});
+
+// Logout user
+router.post("/logout", async (req, res, next) => {
+  
+  const isProd = process.env.NODE_ENV === "production";
+  
+  res.clearCookie("accessToken", {
+      httpOnly: true,
+      secure: isProd,
+      sameSite: isProd ? "none" : "lax",
+      path: "/",
+    });
+
+    return res.status(200).json({sucess: true, message: "Logout succesful."});
+});
+
+
+// Check user token
+router.get("/auth", authUser, async (req, res, next) => {
+  try {
+    
+    const userId = req.user.user._id;
+
+    const user = await User.findById(userId);
+
+    if(!user) {
+      return res.status(401).json({sucess: false, message: "User Not Found."});
+    }
+
+    return res.status(200).json({sucess: true, data: {_id: user._id, username: user.username, email: user.email, role: user.role}});
+
+  } catch (err) {
+    next(err);
+  }
+
 });
