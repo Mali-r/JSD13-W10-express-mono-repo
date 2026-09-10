@@ -98,19 +98,19 @@ router.post("/login", async (req, res, next) => {
     if (!email || !password) {
       return res
         .status(400)
-        .json({ sucess: false, message: "Email amd Password are required!" });
+        .json({ success: false, message: "Email amd Password are required!" });
     }
 
     const user = await User.findOne({ email }).select("+password");
 
     if (!user) {
-      returnres.status(400).json({ sucess: false, message: "User not found" });
+      returnres.status(400).json({ success: false, message: "User not found" });
     }
 
     const isMatched = await bcrypt.compare(password, user.password);
 
     if (!isMatched) {
-      res.status(400).json({ sucess: false, message: "Incorrect password" });
+      res.status(400).json({ success: false, message: "Incorrect password" });
     }
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
@@ -128,7 +128,7 @@ router.post("/login", async (req, res, next) => {
     });
 
     return res.status(200).json({
-      sucess: true,
+      success: true,
       essage: "Login successful!",
       user: {
         _id: user._id,
@@ -154,7 +154,7 @@ router.post("/logout", async (req, res, next) => {
       path: "/",
     });
 
-    return res.status(200).json({sucess: true, message: "Logout succesful."});
+    return res.status(200).json({success: true, message: "Logout succesful."});
 });
 
 
@@ -167,10 +167,10 @@ router.get("/auth", authUser, async (req, res, next) => {
     const user = await User.findById(userId);
 
     if(!user) {
-      return res.status(401).json({sucess: false, message: "User Not Found."});
+      return res.status(401).json({success: false, message: "User Not Found."});
     }
 
-    return res.status(200).json({sucess: true, data: {_id: user._id, username: user.username, email: user.email, role: user.role}});
+    return res.status(200).json({success: true, data: {_id: user._id, username: user.username, email: user.email, role: user.role}});
 
   } catch (err) {
     next(err);
