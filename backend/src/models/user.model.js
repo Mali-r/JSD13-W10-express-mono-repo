@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema(
       trim: true,
       match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email format"],
     },
-    password: { type: String },
+    password: { type: String, },
   },
   { timestamps: true },
 );

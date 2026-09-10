@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { User } from "../../models/user.model.js";
+import bcrypt from "bcrypt";
 
 export const router = Router();
-import bcrypt from "bcrypt";
 
 async function hashPassword(rawpass) {
     const hash = await bcrypt.hash(rawpass, 12)
@@ -37,10 +37,13 @@ router.post("/", async (req, res, next) => {
     const hpass = await hashPassword(password);
     const newUser = await User.create({ username, email, password:hpass});
 
-    // const { password: _password, ...userWithoutPassword } = newUser.toObject(); // MongoDB Doc to JS, _password <- เป้น syntax ของ mongoDB
+    const { password: _password, ...userWithoutPassword } = newUser.toObject(); // MongoDB Doc to JS, _password <- เป้น syntax ของ mongoDB >> Ai ไม่ให้เอาออก
 
-    return res.status(201).json(newUser);
+    return res.status(201).json(userWithoutPassword);
   } catch (err) {
+    if (err.code === 11000) {
+      return res.status(409).json({ error: "Email นี้ถูกใช้งานแล้ว" });
+    }
     next(err);
   }
 });
