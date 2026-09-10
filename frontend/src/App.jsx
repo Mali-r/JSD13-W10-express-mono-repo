@@ -21,7 +21,7 @@ function App() {
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
-  const [form, setForm] = useState({ username: "", email: "", password: "" });
+  const [form, setForm] = useState({ username: "", role: "", email: "", password: "" });
   const [editingId, setEditingId] = useState(null); // null = create mode, มีค่า = edit mode
 
   const fetchUsers = async () => {
@@ -49,7 +49,7 @@ function App() {
   };
 
   const resetForm = () => {
-    setForm({ username: "", email: "", password: "" });
+    setForm({ username: "", role: "", email: "", password: "" });
     setEditingId(null);
   };
 
@@ -79,7 +79,7 @@ function App() {
 
   const handleEdit = (user) => {
     setEditingId(user._id);
-    setForm({ username: user.username, email: user.email, password: "" });
+    setForm({ username: user.username, role: user.role , email: user.email, password: "" });
   };
 
   const handleDelete = async (id) => {
@@ -139,6 +139,16 @@ function App() {
             name="username"
             placeholder="Username"
             value={form.username}
+            onChange={handleChange}
+            required
+            className="w-full bg-gray-700 rounded px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+          />
+
+          <input
+            type="text"
+            name="role"
+            placeholder="role"
+            value={form.role}
             onChange={handleChange}
             required
             className="w-full bg-gray-700 rounded px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
