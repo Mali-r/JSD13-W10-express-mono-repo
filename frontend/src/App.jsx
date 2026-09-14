@@ -101,7 +101,7 @@ function App() {
 
   // ---------- login แล้ว -> โชว์หน้า Users management เดิม ----------
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-8">
+    <div className="min-h-screen bg-gray-400 text-white p-8">
       <div className="max-w-2xl mx-auto">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold">
