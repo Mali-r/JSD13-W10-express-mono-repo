@@ -1,0 +1,24 @@
+@baseURL = http://localhost:3001/api/v2
+
+### Read all users
+GET {{baseURL}}/users
+
+### Create a new user
+POST {{baseURL}}/users
+Content-Type: application/json
+
+{
+  "username": "MaliVector",
+  "role": "user",
+  "email": "MaliVector@example.com",
+  "password": "MaliVector",
+  "position": "Site Engineer"
+}
+
+### Ask Ai about user
+POST {{baseURL}}/users/askAI
+Content-Type: application/json
+
+{
+    "question": "who is engineer"
+}
